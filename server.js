@@ -19,33 +19,35 @@ app.use(flash());
 
 app.get("/task", (req, res) => {
     TaskApi.find()
-        .then(d => res.json({ d }))
+        .then(d => res.json({ result: d }))
         .catch(err => res.json({ err }));
 });
 
-app.post("/task/new/:title", (req, res) => {
-    const title = req.params.title;
+app.post("/task/new", (req, res) => {
+    const title = req.body.title;
+    const desc = req.body.description;
     console.log("************", title);
     const taskApi = new TaskApi(req.body);
     taskApi.title = title;
+    taskApi.description = desc;
     taskApi.compleated = false;
     TaskApi.create(taskApi)
-        .then(a => res.json(a))
-        .catch(err => res.json(err));
+        .then(a => res.json({ msg: "Successfully Added", result: a }))
+        .catch(err => res.json({ msg: "Error Somthing wrong", err: err }));
 });
 
 app.get("/task/:id", (req, res) => {
     const id = req.params.id;
     console.log("************", { id });
     TaskApi.findOne({ _id: id })
-        .then(A => res.json(A))
+        .then(A => res.json({ result: A }))
         .catch(err => res.json(err));
 });
 
 app.put("/task/edit/:id", (req, res) => {
     const { id } = req.params;
     console.log(id);
-    TaskApi.update({ _id: id }, { $set: req.body })
+    TaskApi.findOneAndUpdate({ _id: id }, { $set: req.body })
         .then(d => res.json({ msg: "Successfully edit", d: d }))
         .catch(err => res.json({ message: "Error", error: err }));
 });

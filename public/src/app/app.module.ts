@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { HttpService } from './http.service';
 // import httpclient
 import { HttpClientModule } from '@angular/common/http';
-
+import { FormsModule } from '@angular/forms'; // <-- import FormsModule.
 import { HttpClient } from 'selenium-webdriver/http';
 @NgModule({
   declarations: [
@@ -16,7 +16,8 @@ import { HttpClient } from 'selenium-webdriver/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule, // <-- register FormsModule with our app.
   ],
   providers: [HttpService],
   bootstrap: [AppComponent]
